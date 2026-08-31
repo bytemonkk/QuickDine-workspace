@@ -48,7 +48,7 @@ const RestaurantSchema = new Schema<IRestaurant>(
     featured: {type: Boolean, default: false},
     exclusive: {type: Boolean, default: false},
     owner: {type: Schema.Types.ObjectId, ref: "User", required: true},
-    status: { type: String, enum: ["pending", "Approved", "rejected"], default: "pending"},
+    status: { type: String, enum: ["pending", "approved", "rejected"], default: "pending"},
     totalSeats: {type: Number, default: 20},
 
   },
