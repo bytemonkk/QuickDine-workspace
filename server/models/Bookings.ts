@@ -37,4 +37,4 @@ BookingSchema.pre("save", function(){
         this.bookingId = `GR-${crypto.randomBytes(4).toString("hex").toUpperCase()}`
     }
 })
-export const Booking = model<IBooking>("User", BookingSchema);
+export const Booking = model<IBooking>("Booking", BookingSchema);
