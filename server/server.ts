@@ -6,6 +6,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import connectDB from "./config/db.js";
 import authRouter from "./routes/authRoutes.js";
+import restaurantRouter from "./routes/restaurantRoutes.js";
 
 const app = express();
 
@@ -22,8 +23,11 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Server is Live!");
 });
 
-// API Endpoints
+// Authentication API Endpoint
 app.use("/api/auth", authRouter);
+
+// Restaurant API Endpoint
+app.use("/api/restaurants", restaurantRouter);
 
 // server Error handler 500
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
