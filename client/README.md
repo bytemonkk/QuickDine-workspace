@@ -4,7 +4,7 @@ Welcome to the frontend repository for **QuickDine** – a modern, premium table
 
 This application is built using **React 19**, **Vite**, **TypeScript**, and **Tailwind CSS v4**.
 
-## ✨ Features
+## Features
 
 - **Discerning Curation**: Clean, premium, and responsive search & filter options to browse dining venues by location, cuisine, price range, and rating.
 - **Seat Availability System**: Live check of table slots and seat capacity for a chosen reservation date.
@@ -67,11 +67,3 @@ Preview the production build locally:
 ```bash
 npm run preview
 ```
-
-## 🤝 Contributing
-
-We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to get started.
-
-## 📄 License
-
-Distributed under the MIT License. See [LICENSE.md](./LICENSE.md) for more details.
