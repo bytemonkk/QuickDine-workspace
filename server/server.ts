@@ -9,6 +9,7 @@ import authRouter from "./routes/authRoutes.js";
 import restaurantRouter from "./routes/restaurantRoutes.js";
 import bookingRouter from "./routes/bookingRoutes.js";
 import ownerRouter from "./routes/ownerRoutes.js";
+import adminRouter from "./routes/adminRoutes.js";
 
 const app = express();
 
@@ -36,6 +37,9 @@ app.use("/api/bookings", bookingRouter);
 
 // owner's API Endpoint
 app.use("/api/owner", ownerRouter);
+
+// admin's API Endpoint
+app.use("/api/admin", adminRouter);
 
 // server Error handler 500
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
