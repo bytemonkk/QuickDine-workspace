@@ -5,7 +5,7 @@ const restaurantRouter = Router();
 
 //router.get(path,controller)
 restaurantRouter.get("/", getRestaurants);
-restaurantRouter.get("/feautred", getFeaturedRestaurants);
+restaurantRouter.get("/featured", getFeaturedRestaurants);
 restaurantRouter.get("/:slug", getRestaurantBySlug);
 restaurantRouter.get("/:id/availability", getRestaurantAvailability);
 
