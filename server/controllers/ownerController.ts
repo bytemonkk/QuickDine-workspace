@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { AuthRequest } from "../middlewares/auth.js";
 import { Restaurant } from "../models/Restaurant.js";
-import { v2 as cloudinary } from "cloudinary";
+import cloudinary from "../config/cloudinary.js";
 import { Booking } from "../models/Bookings.js";
 
 // helper function to upload buffer to cloudinary
@@ -12,7 +12,14 @@ const uploadToCloudinary = (
     const stream = cloudinary.uploader.upload_stream(
       { folder: "QuickDine" },
       (error, result) => {
-        if (error) return reject(error);
+        if (error) {
+          console.error("CLOUDINARY ERROR:");
+          console.error("message:", error.message);
+          console.error("http_code:", error.http_code);
+          console.error("name:", error.name);
+          console.error("full error:", error);
+          return reject(error);
+        }
         if (!result) return reject(new Error("Upload failed"));
         resolve({ secure_url: result.secure_url });
       },
@@ -87,7 +94,7 @@ export const createOwnerRestaurant = async (
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)+/g, "");
 
-    const slugExists = await Restaurant.findOne({slug});
+    const slugExists = await Restaurant.findOne({ slug });
     if (slugExists) {
       res
         .status(400)
@@ -216,8 +223,7 @@ export const getOwnerBookings = async (
       .populate("user", "name email phone")
       .sort({ date: -1, time: -1 });
 
-      res.json(bookings);
-
+    res.json(bookings);
   } catch (error: any) {
     console.error(error);
     res.status(400).json({ message: error.message });
@@ -231,31 +237,32 @@ export const updateBookingStatus = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const {status} = req.body;
-    if(!status || !["confirmed", "cancelled", "completed"].includes(status)){
-        res.status(400).json({message: "please Enter a valid booking status!"});
-        return;
-
+    const { status } = req.body;
+    if (!status || !["confirmed", "cancelled", "completed"].includes(status)) {
+      res.status(400).json({ message: "please Enter a valid booking status!" });
+      return;
     }
 
     const booking = await Booking.findById(req.params.id);
-    if(!booking){
-        res.status(404).json({message: "booking not found!"});
-        return;
-
+    if (!booking) {
+      res.status(404).json({ message: "booking not found!" });
+      return;
     }
 
     // verify booking belongs to the owner's restaurant
     const restaurant = await Restaurant.findById(booking.restaurant);
-    if(!restaurant || restaurant.owner.toString() !== req.user?._id.toString()){
-        res.status(403).json({message: "Not Authorized to manage this booking!"});
-        return;
-
+    if (
+      !restaurant ||
+      restaurant.owner.toString() !== req.user?._id.toString()
+    ) {
+      res
+        .status(403)
+        .json({ message: "Not Authorized to manage this booking!" });
+      return;
     }
     booking.status = status;
     await booking.save();
     res.json(booking);
-
   } catch (error: any) {
     console.error(error);
     res.status(400).json({ message: error.message });
